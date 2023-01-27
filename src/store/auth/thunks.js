@@ -1,4 +1,4 @@
-import { singInWithGoogle } from "../../firebase";
+import { loginWithEmailPassword, logoutFirebase, registerUserWithEmailPassword, singInWithGoogle } from "../../firebase";
 import { chekingCredentials, login, logout } from "./"
 
 export const chekingAuthentication = ( email, password ) => {
@@ -7,12 +7,45 @@ export const chekingAuthentication = ( email, password ) => {
   }
 }
 
+export const startCreatingUserWithEmailPassword = ({ email, password, displayName}) => {
+  return async (dispatch) => {
+    dispatch(chekingCredentials());
+    const result = await registerUserWithEmailPassword({email, password, displayName});
+    if(!result.ok) {
+      const { errorMessage } = result;
+      return dispatch(logout({errorMessage}));
+    }
+    dispatch(login(result))
+  }
+}
 
 export const startGoogleSignIn = () => {
   return async (dispatch) => {
     dispatch(chekingCredentials());
     const result = await singInWithGoogle();
-    if(!result.ok) return dispatch(logout(result.errorMessage));
+    if(!result.ok) {
+      const { errorMessage } = result;
+      return dispatch(logout({errorMessage}));
+    }
     dispatch(login(result))
+  }
+}
+
+export const startLoginWithEmailPassword = ({email, password}) => {
+  return async (dispatch) => {
+    dispatch(chekingCredentials());
+    const result = await loginWithEmailPassword({email, password});
+    if(!result.ok) {
+      const { errorMessage } = result;
+      return dispatch(logout({errorMessage}));
+    }
+    dispatch(login(result));
+  }
+}
+
+export const startLogout = () => {
+  return async (dispatch) => {
+    await logoutFirebase();
+    dispatch(logout());
   }
 }

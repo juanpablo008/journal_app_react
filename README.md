@@ -3,8 +3,8 @@
 
 This application was made with react using vite, material/UI.
 
-It is an application to keep a more organized agenda, remember important events or meetings,
-It can be for work or personal use.
+<!-- It is an application to keep a more organized agenda, remember important events or meetings,
+It can be for work or personal use. -->
 
 
 ## Authors
